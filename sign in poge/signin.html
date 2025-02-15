@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextChapter</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ffdde1, #ffb3c1);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 1100px;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+        .left-section {
+            flex: 1;
+            padding: 20px;
+            min-width: 55%;
+            text-align: center;
+        }
+        .chart-image {
+            width: 60%;
+            max-width: 300px;
+            margin-top: 20px;
+        }
+        .right-section {
+            flex: 1;
+            padding: 20px;
+            min-width: 35%;
+            border-left: 1px solid #ddd;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+        }
+        .input-box {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .bold-text {
+            font-weight: bold;
+        }
+        .google-signin-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <h1>NextChapter</h1>
+            <p><strong>See how much money you're wasting—then learn how to fix it.</strong></p>
+            <p>Get started in seconds and prepare for your next chapter.</p>
+            <img src="Screenshot 2025-02-15 135657.png" alt="Financial Chart" class="chart-image">
+        </div>
+        <div class="right-section">
+            <h2>Welcome back!</h2>
+            <p>If you invest just $10 a day, you could have over $70,000 in 10 years!</p>
+            <p class="bold-text">The best time to start? Right now.</p>
+            <input type="email" class="input-box" placeholder="your@email.com">
+            <input type="password" class="input-box" placeholder="your password">
+            <div class="google-signin-container">
+                <div id="g_id_onload"
+                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                     data-login_uri="YOUR_LOGIN_URI"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
