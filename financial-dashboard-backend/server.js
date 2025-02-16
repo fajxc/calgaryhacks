@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+
 console.log('PLAID_CLIENT_ID:', process.env.PLAID_CLIENT_ID);
 console.log('PLAID_SECRET:', process.env.PLAID_SECRET);
 console.log('PLAID_ENV:', process.env.PLAID_ENV);
@@ -10,12 +11,38 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
+const { db } = require('./firebase');
+const admin = require('firebase-admin');
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use(express.static('public'));
+
+app.post('/api/register', async (req, res) => {
+  try {
+    const { name, age, city, education, salary, spending } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+    const docRef = await db.collection('users').add({
+      name,
+      age,
+      city,
+      education,
+      salary,
+      spending,
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    res.json({ message: 'User registered successfully', id: docRef.id });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 
 const { Configuration, PlaidApi, PlaidEnvironments } = require('plaid');
 

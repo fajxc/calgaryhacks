@@ -28,7 +28,7 @@
     }
     .logo {
       position: absolute;
-      top: -40px;
+      top: -40px; /* Logo stuck to the top */
       left: 20px;
       width: 275px;
       height: auto;
@@ -113,6 +113,33 @@
     <p id="savedMessage"></p>
   </div>
   <script>
+    // Function to register the user by sending onboarding data to Firebase
+    async function registerUser() {
+      const name = localStorage.getItem("name");
+      const age = localStorage.getItem("age");
+      const city = localStorage.getItem("city");
+      const education = localStorage.getItem("field");
+      const salary = localStorage.getItem("salary");
+      const spending = localStorage.getItem("spending");
+
+      const payload = { name, age, city, education, salary, spending };
+
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        console.log('Registration success:', data);
+        // Redirect to the next step (link-bank.html)
+        window.location.href = "link-bank.html";
+      } catch (err) {
+        console.error('Registration error:', err);
+      }
+    }
+
+    // Function to save spending, fade out, and register user
     function saveSpending() {
       let spending = document.getElementById("spendingInput").value.trim();
       if (spending === "" || isNaN(spending)) {
@@ -128,9 +155,11 @@
       document.querySelector(".container").style.justifyContent = "center";
       document.getElementById("container").classList.add("fade-out");
       setTimeout(function() {
-        window.location.href = "link-bank.html";
+        registerUser();
       }, 600);
     }
+
+    // Handle pressing the Enter key to submit
     function handleKeyPress(event) {
       if (event.key === "Enter") {
         saveSpending();
