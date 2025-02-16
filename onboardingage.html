@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Eudoxus+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #D8A7B1;
+        }
+        body {
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+            font-family: 'Eudoxus Sans', sans-serif;
+            background: linear-gradient(to top, #FE8DC6, #FED1C7);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+        }
+        .logo {
+            position: absolute;
+            top: -40px; /* Logo is stuck to the top */
+            left: 20px;
+            width: 275px;
+            height: auto;
+        }
+        .container {
+            background: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 400px;
+            margin-top: 5vh;
+            min-height: 200px;
+        }
+        h1 {
+            margin-top: 5vh;
+            font-size: 42px;
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        input {
+            margin-top: 10px;
+            padding: 12px;
+            font-size: 18px;
+            font-family: 'Eudoxus Sans', sans-serif;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+            color: black;
+            display: block;
+            margin: 0 auto;
+        }
+        input::placeholder {
+            color: #888;
+            font-style: italic;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 18px;
+            font-size: 18px;
+            font-family: 'Eudoxus Sans', sans-serif;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            display: block;
+            margin: 15px auto 0 auto;
+        }
+        button:hover {
+            background-color: #C48A9E;
+        }
+        #savedMessage {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <img src="nextchapterlogo.png" alt="Logo" class="logo"> <!-- Logo stays at the top -->
+    <h1>Onboarding</h1>
+    <div class="container">
+        <h2 id="question">What is your age?</h2>
+        <input type="number" id="ageInput" placeholder="Enter your age:" onkeypress="handleKeyPress(event)">
+        <button onclick="saveAge()">Enter</button>
+        <p id="savedMessage"></p>
+    </div>
+    <script>
+        function saveAge() {
+            let age = document.getElementById("ageInput").value.trim();
+            if (age === "" || isNaN(age) || age <= 0) {
+                alert("Please enter a valid age!");
+                return;
+            }
+            localStorage.setItem("age", age);
+            document.getElementById("savedMessage").innerText = "Thanks!";
+            document.getElementById("savedMessage").style.display = "block";
+            document.getElementById("ageInput").style.display = "none";
+            document.querySelector("button").style.display = "none";
+            document.getElementById("question").style.display = "none";
+            document.querySelector(".container").style.justifyContent = "center";
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                saveAge();
+            }
+        }
+
+        window.onload = function() {
+            let savedAge = localStorage.getItem("age");
+            if (savedAge) {
+                document.getElementById("savedMessage").style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
