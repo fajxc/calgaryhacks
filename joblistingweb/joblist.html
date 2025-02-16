@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="jobliststyles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <img src="images/logo.png" alt="My Logo" />
+        </div>
+        <div class="nav">
+          <a href="#">Home</a>
+          <a href="#">Dashboard</a>
+          <a href="#">Financial Tracker</a>
+          <a href="#">Job Listings</a>
+        </div>
+      </div>
+      <h1>Job Listings</h1>
+      <p>
+        <strong>Location:</strong>
+        <select id="location-select">
+          <option value="Calgary">Calgary</option>
+          <option value="Barrie">Barrie</option>
+          <option value="Abbotsford">Abbotsford</option>
+          <option value="Chicoutimi">Chicoutimi</option>
+          <option value="Edmonton">Edmonton</option>
+          <option value="Guelph">Guelph</option>
+          <option value="Halifax">Halifax</option>
+          <option value="Hamilton">Hamilton</option>
+          <option value="Kelowna">Kelowna</option>
+          <option value="Kingston">Kingston</option>
+          <option value="Kitchener">Kitchener</option>
+          <option value="London">London</option>
+          <option value="Moncton">Moncton</option>
+          <option value="Montreal">Montreal</option>
+          <option value="Ottawa">Ottawa</option>
+          <option value="Quebec City">Quebec City</option>
+          <option value="Regina">Regina</option>
+          <option value="Saskatoon">Saskatoon</option>
+          <option value="Sherbrooke">Sherbrooke</option>
+          <option value="St. John's">St. John's</option>
+          <option value="Toronto">Toronto</option>
+          <option value="Trois-Rivières">Trois-Rivières</option>
+          <option value="Vancouver">Vancouver</option>
+          <option value="Victoria">Victoria</option>
+          <option value="Winnipeg">Winnipeg</option>
+        </select>        
+        | <strong>Role:</strong>
+        <input type="text" id="role-search" placeholder="Search role..." value="Software Engineer" />
+      </p>
+      <div class="job-listings" id="job-listings">
+        <p>Loading job listings...</p>
+      </div>
+    </div>
+
+    <script src="joblistjava.js"></script>
+  </body>
+</html>
