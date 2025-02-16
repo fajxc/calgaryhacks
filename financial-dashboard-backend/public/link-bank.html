@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding - Link Bank Account</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to top, #FE8DC6, #FED1C7);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 1700px;
+      height: 90vh;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ddd;
+    }
+    .header h1 {
+      font-size: 24px;
+    }
+    .nav {
+      display: flex;
+      gap: 15px;
+    }
+    .nav a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+    }
+    /* Central Box Styling */
+    .central-box {
+      flex: 1;
+      margin: 40px auto;
+      max-width: 600px;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .central-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    .central-box h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #333;
+    }
+    .central-box p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    .link-button {
+      background: #FE8DC6;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .link-button:hover {
+      background: #e67ab3;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      max-height: 100px;
+      margin-right: 10px;
+    }
+  </style>
+  <!-- Include Plaid Link script once -->
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="images/logo.png" alt="My Logo" style="height: 100px;" />
+          </div>
+      <div class="nav">
+        <a href="#">Home</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Financial Tracker</a>
+        <a href="#">Job Listings</a>
+      </div>
+    </div>
+    
+    <!-- Central Content Box -->
+    <div class="central-box">
+      <h2>Securely Connect Your Bank Account</h2>
+      <p>
+        To enjoy a complete view of your financial landscape, please connect your bank account.
+        This secure connection ensures that your data is safely retrieved and seamlessly integrated into your dashboard.
+      </p>
+      <button id="link-button" class="link-button">Link Your Bank Account</button>
+    </div>
+  </div>
+  
+  <script>
+    // Initialize Plaid Link
+    async function initializePlaidLink() {
+      try {
+        const response = await fetch('/api/create_link_token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        const linkToken = data.link_token;
+        console.log('Received link token:', linkToken);
+        if (!linkToken) {
+          console.error('No link token received!');
+          return;
+        }
+        const handler = Plaid.create({
+          token: linkToken,
+          onSuccess: async function(public_token, metadata) {
+            console.log('Plaid Link success:', public_token, metadata);
+            // Exchange the public token for an access token on the backend
+            const exchangeResponse = await fetch('/api/set_access_token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ public_token })
+            });
+            const exchangeData = await exchangeResponse.json();
+            console.log('Access token exchange:', exchangeData);
+            // Redirect to the dashboard after successful linking
+            window.location.href = '/dashboard.html';
+          },
+          onExit: function(err, metadata) {
+            console.log('Plaid Link exited:', err, metadata);
+          }
+        });
+        document.getElementById('link-button').addEventListener('click', function() {
+          handler.open();
+        });
+      } catch (error) {
+        console.error('Error initializing Plaid Link:', error);
+      }
+    }
+    
+    window.addEventListener('load', initializePlaidLink);
+  </script>
+</body>
+</html>
