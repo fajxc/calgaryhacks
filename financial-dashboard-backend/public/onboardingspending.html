@@ -95,12 +95,6 @@
     button:hover {
       background-color: #C48A9E;
     }
-    #savedMessage {
-      font-size: 36px;
-      font-weight: bold;
-      text-align: center;
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -109,33 +103,57 @@
   <div class="container" id="container">
     <h2 id="question">On average, how much do you spend monthly in total?</h2>
     <input type="number" id="spendingInput" placeholder="E.g., 2500 (no commas or symbols)" onkeypress="handleKeyPress(event)">
-    <button onclick="saveSpending()">Enter</button>
-    <p id="savedMessage"></p>
+    <button onclick="submitOnboarding()">Enter</button>
   </div>
+
   <script>
-    function saveSpending() {
+    function submitOnboarding() {
       let spending = document.getElementById("spendingInput").value.trim();
-      if (spending === "" || isNaN(spending)) {
-        alert("Please enter a valid number!");
+      if (spending === "" || isNaN(spending) || spending < 0) {
+        alert("Please enter a valid spending amount!");
         return;
       }
-      localStorage.setItem("spending", spending);
-      document.getElementById("savedMessage").innerText = "Ambitious!";
-      document.getElementById("savedMessage").style.display = "block";
-      document.getElementById("spendingInput").style.display = "none";
-      document.querySelector("button").style.display = "none";
-      document.getElementById("question").style.display = "none";
-      document.querySelector(".container").style.justifyContent = "center";
-      document.getElementById("container").classList.add("fade-out");
-      setTimeout(function() {
+  
+      // Collect all previous data stored in localStorage
+      const userData = {
+        name: localStorage.getItem("name"),
+        age: localStorage.getItem("age"),
+        city: localStorage.getItem("city"),
+        education: localStorage.getItem("education"),
+        email: localStorage.getItem("email"),
+        password: localStorage.getItem("password"),
+        salary: localStorage.getItem("salary"),
+        spending: spending
+      };
+  
+      console.log("📤 Sending data:", userData); // Debugging log
+  
+      // Send data to backend
+      fetch("http://localhost:5000/saveUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("✅ Server response:", data);
+        alert("Account created successfully!");
+  
+        // Redirect to link-bank.html
         window.location.href = "link-bank.html";
-      }, 600);
+      })
+      .catch(error => {
+        console.error("❌ Error:", error);
+        alert("Error saving data. Check console for details.");
+      });
     }
+  
     function handleKeyPress(event) {
       if (event.key === "Enter") {
-        saveSpending();
+        submitOnboarding();
       }
     }
   </script>
+  
 </body>
 </html>

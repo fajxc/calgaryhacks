@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -55,22 +55,22 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding-top: 10px; /* Moves everything up */
+            padding-top: 10px;
         }
         .logo-image {
             width: 250px;
             margin-bottom: 0px;
             position: relative;
-            top: -10px; /* Move higher */
+            top: -10px;
         }
         h2 {
-            margin-bottom: 8px; /* Reduce space under "Welcome back!" */
+            margin-bottom: 8px;
         }
         .auth-section {
             width: 100%;
             max-width: 300px;
             text-align: center;
-            margin-top: -25px; /* Move login section even higher */
+            margin-top: -25px;
         }
         .input-box {
             width: 85%;
@@ -81,7 +81,7 @@
             text-align: center;
         }
         .google-signin-container {
-            margin-top: 5px; /* Bring Google sign-in closer */
+            margin-top: 5px;
         }
         button {
             width: 100%;
@@ -131,14 +131,14 @@
 
             <h2>Welcome back!</h2>
 
-            <!-- Login Section (Moved Up) -->
+            <!-- Login Section -->
             <div class="auth-section">
                 <h2>Login</h2>
                 <input type="email" id="login-email" class="input-box" placeholder="Enter your email">
                 <input type="password" id="login-password" class="input-box" placeholder="Enter your password">
                 <button onclick="loginUser()">Login</button>
 
-                <!-- Google Sign-In Button (Closer to Login) -->
+                <!-- Google Sign-In Button -->
                 <div class="google-signin-container">
                     <div id="g_id_onload"
                          data-client_id="125347354573-plr0kbuc167q8si5fedftgo4jlfr5f5i.apps.googleusercontent.com"
@@ -157,7 +157,9 @@
                 </div>
 
                 <!-- Create New Account Link -->
-                <p class="create-account">or <a href="register.html">Create New Account</a></p>
+                <p class="create-account">
+                    or <a href="../financial-dashboard-backend/public/onboarding1.html">Create New Account</a>
+                </p>
             </div>
         </div>
     </div>

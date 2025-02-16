@@ -26,7 +26,7 @@
             display: flex;
             width: 90%;
             max-width: 1400px;
-            height: 90vh; /* Adjusted height */
+            height: 90vh;
         }
         .left-section {
             background: linear-gradient(135deg, #ff69b4, #ffc0cb);
@@ -40,7 +40,7 @@
             padding-bottom: 20px;
         }
         .left-section img.phone-image {
-            width: 600px; /* Reduced phone size by 1/3 */
+            width: 600px;
             height: auto;
             max-width: 100%;
         }
@@ -50,14 +50,14 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            align-items: center; /* Centers everything */
+            align-items: center;
         }
         .nav {
             display: flex;
             justify-content: flex-end;
             gap: 35px;
             margin-bottom: 40px;
-            align-self: flex-end; /* Keeps navbar on the right */
+            align-self: flex-end;
         }
         .nav a {
             text-decoration: none;
@@ -105,13 +105,14 @@
             font-weight: bold;
             font-size: 1.2em;
             margin-bottom: 20px;
+            display: inline-block;
         }
         .content a:hover {
             text-decoration: underline;
         }
         .content img.logo {
-            width: 180px; /* Adjusted logo size */
-            margin-top: 15px; /* Adds spacing from the text */
+            width: 180px;
+            margin-top: 15px;
         }
         .signup {
             text-align: center;
@@ -129,7 +130,7 @@
                 padding-bottom: 20px;
             }
             .left-section img.phone-image {
-                width: 450px; /* Adjusted for tablets */
+                width: 450px;
             }
         }
         @media (max-width: 768px) {
@@ -143,10 +144,10 @@
                 font-size: 1.2em;
             }
             .left-section img.phone-image {
-                width: 350px; /* Adjusted for mobile */
+                width: 350px;
             }
             .content img.logo {
-                width: 140px; /* Smaller logo for mobile */
+                width: 140px;
             }
         }
     </style>
@@ -155,20 +156,20 @@
     <div class="container">
         <div class="card">
             <div class="left-section">
-                <img src="phone.png" alt="Phone" class="phone-image">
+                <img src="phone.png" alt="Phone" class="phone-image"> <!-- ✅ Fixed Path -->
             </div>
             <div class="right-section">
                 <div class="nav">
-                    <a href="#">Home</a>
-                    <a href="#">Dashboard</a>
-                    <a href="#">Financial Tracker</a>
-                    <a href="#">Job Listings</a>
+                    <a href="home.html">Home</a>
+                    <a href="#">Dashboard</a> <!-- Not linked yet -->
+                    <a href="../finance/index.html">Financial Tracker</a>
+                    <a href="../job/joblist.html">Job Listings</a>
                 </div>
                 <div class="content">
                     <h1>You swear you're good with money…</h1>
                     <p>so where does it all go?</p>
-                    <a href="#">Let us find out for you.</a>
-                    <img src="nextchapter-logo.png" alt="NextChapter Logo" class="logo">
+                    <a href="../sign in poge/signin.html">Let us find out for you.</a>
+                    <img src="../nextchapterlogo.png" alt="NextChapter Logo" class="logo">
                 </div>
                 <div class="signup">
                     Sign up now.
