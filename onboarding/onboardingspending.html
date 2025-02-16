@@ -107,32 +107,55 @@
     </div>
     <script>
         function saveSpending() {
-            let spending = document.getElementById("spendingInput").value.trim();
+            const spending = document.getElementById("spendingInput").value.trim();
+        
             if (spending === "" || isNaN(spending)) {
                 alert("Please enter a valid number!");
                 return;
             }
-            localStorage.setItem("spending", spending);
-            document.getElementById("savedMessage").innerText = "Ambitious!";
-            document.getElementById("savedMessage").style.display = "block";
-            document.getElementById("spendingInput").style.display = "none";
-            document.querySelector("button").style.display = "none";
-            document.getElementById("question").style.display = "none";
-            document.querySelector(".container").style.justifyContent = "center";
+        
+            // Retrieve all user data from localStorage
+            const userData = {
+                name: localStorage.getItem("name"),
+                age: localStorage.getItem("age"),
+                city: localStorage.getItem("city"),
+                education: localStorage.getItem("education"),
+                email: localStorage.getItem("email"),
+                password: localStorage.getItem("password"),
+                salary: localStorage.getItem("salary"),
+                spending: spending
+            };
+        
+            console.log("Sending user data to backend:", userData);
+        
+            // Send data to backend
+            fetch("http://localhost:5000/saveUser", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert("User data saved successfully!");
+                    // Redirect to the next step
+                    window.location.href = "link-bank.html";
+                } else {
+                    alert("Error saving data.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while saving.");
+            });
         }
-
+        
         function handleKeyPress(event) {
             if (event.key === "Enter") {
                 saveSpending();
             }
         }
-
-        window.onload = function() {
-            let savedSpending = localStorage.getItem("spending");
-            if (savedSpending) {
-                document.getElementById("savedMessage").style.display = "none";
-            }
-        }
-    </script>
+        </script>
+        
 </body>
 </html>

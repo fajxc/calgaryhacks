@@ -68,12 +68,6 @@
       color: black;
       display: block;
       margin: 0 auto;
-      -moz-appearance: textfield;
-    }
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
     }
     input::placeholder {
       color: #888;
@@ -107,53 +101,52 @@
   </div>
 
   <script>
-    function submitOnboarding() {
-      let spending = document.getElementById("spendingInput").value.trim();
-      if (spending === "" || isNaN(spending) || spending < 0) {
-        alert("Please enter a valid spending amount!");
+function submitOnboarding() {
+    const name = localStorage.getItem("name");
+    const age = localStorage.getItem("age");
+    const city = localStorage.getItem("city");
+    const education = localStorage.getItem("education") || "Unknown"; // Fallback
+    const email = localStorage.getItem("email");
+    const password = localStorage.getItem("password");
+    const salary = localStorage.getItem("salary");
+    const spending = document.getElementById("spendingInput").value.trim();
+
+    console.log("📤 Data being sent:", { name, age, city, education, email, password, salary, spending });
+
+    if (!name || !age || !city || !education || !email || !password || !salary || !spending) {
+        alert("⚠️ Missing required fields. Please complete all onboarding steps.");
         return;
-      }
-  
-      // Collect all previous data stored in localStorage
-      const userData = {
-        name: localStorage.getItem("name"),
-        age: localStorage.getItem("age"),
-        city: localStorage.getItem("city"),
-        education: localStorage.getItem("education"),
-        email: localStorage.getItem("email"),
-        password: localStorage.getItem("password"),
-        salary: localStorage.getItem("salary"),
-        spending: spending
-      };
-  
-      console.log("📤 Sending data:", userData); // Debugging log
-  
-      // Send data to backend
-      fetch("http://localhost:5000/saveUser", {
+    }
+
+    fetch("http://localhost:5000/saveUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
-      })
-      .then(response => response.json())
-      .then(data => {
+        body: JSON.stringify({ name, age, city, education, email, password, salary, spending })
+    })
+    .then(response => response.json())
+    .then(data => {
         console.log("✅ Server response:", data);
-        alert("Account created successfully!");
-  
-        // Redirect to link-bank.html
-        window.location.href = "link-bank.html";
-      })
-      .catch(error => {
+        if (data.message) {
+            alert("✅ User data saved successfully!");
+            window.location.href = "dashboard.html"; // Redirect after saving
+        } else {
+            alert("❌ Error saving data.");
+        }
+    })
+    .catch(error => {
         console.error("❌ Error:", error);
-        alert("Error saving data. Check console for details.");
-      });
-    }
-  
+        alert("An error occurred while saving your data.");
+    });
+}
+
+
+
+
     function handleKeyPress(event) {
       if (event.key === "Enter") {
         submitOnboarding();
       }
     }
   </script>
-  
 </body>
 </html>
