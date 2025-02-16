@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Import Roboto for a nicer welcome message -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Financial Dashboard</title>
   <style>
+    /* ----- Base Page & Container ----- */
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background: linear-gradient(to top, #FE8DC6, #FED1C7);
@@ -14,19 +18,26 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
     }
     .container {
       width: 100%;
       max-width: 1700px;
-      height: 90vh;
+      height: 90vh; /* Fill most of the viewport vertically */
       background: white;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
+      overflow: auto; /* Allow vertical scrolling if content grows taller */
     }
-    .header {     display: flex;
+
+    /* ----- Header & Navigation ----- */
+    .header {
+      display: flex;
       justify-content: space-between;
       align-items: center;
       padding-bottom: 10px;
@@ -36,52 +47,74 @@
       font-size: 24px;
     }
     .nav {
-        display: flex;
-        gap: 25px;
-        justify-content: flex-end;
-        margin-bottom: 30px;
+      display: flex;
+      gap: 25px;
+      justify-content: flex-end;
+      margin-bottom: 30px;
     }
     .nav a {
-        text-decoration: none;
-        color: #000;
-        font-weight: bold;
-        position: relative;
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+      position: relative;
     }
     .nav a::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 3px;
-        background: #ff6384;
-        left: 0;
-        bottom: -5px;
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      background: #ff6384;
+      left: 0;
+      bottom: -5px;
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
     }
     .nav a:hover::after {
-        transform: scaleX(1);
+      transform: scaleX(1);
     }
-    /* Dashboard Grid */
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      max-height: 80px;
+      margin-right: 10px;
+    }
+
+    /* ----- Dashboard Grid Layout ----- */
     .dashboard {
       display: grid;
-      grid-template-columns: 1.5fr 2fr 2fr; /* Left column is thinner now */
-      gap: 20px;
+      grid-template-columns: 1.5fr 2fr 2fr; /* 3 columns on large screens */
+      gap: 30px;
       margin-top: 20px;
-      height: 100%;
+      flex: 1;
+      box-sizing: border-box;
     }
-    /* Box Base Styling */
+    /* Breakpoints for responsive columns */
+    @media (max-width: 1200px) {
+      .dashboard {
+        grid-template-columns: 1fr 1fr; /* 2 columns on medium screens */
+      }
+    }
+    @media (max-width: 800px) {
+      .dashboard {
+        grid-template-columns: 1fr; /* 1 column on small screens */
+      }
+    }
+
+    /* ----- Box Base Styling ----- */
     .box,
     .account-balance,
     .text-section,
     .recent-transactions,
     .job-listings {
       background: #ffffff;
-      padding: 15px 20px;
+      padding: 20px 25px;
       border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
     }
-    /* Hover Effect for Boxes */
     .box:hover,
     .account-balance:hover,
     .text-section:hover,
@@ -90,16 +123,13 @@
       transform: translateY(-5px);
       box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
     }
-    /* Smooth Text Hover */
     .box p,
     .account-balance p,
     .text-section p,
     .recent-transactions p,
     .job-listings p,
     .header h1,
-    .nav a,
-    .left-section h3,
-    .middle-section h3 {
+    .nav a {
       transition: color 0.3s ease;
     }
     .box p:hover,
@@ -109,70 +139,174 @@
     .job-listings p:hover {
       color: #555;
     }
-    /* Left Section */
+
+    /* ----- Left Section (Accounts & Info) ----- */
     .left-section {
       display: flex;
       flex-direction: column;
     }
     .left-section h3 {
       margin-bottom: 10px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #333;
     }
     .left-content {
       display: flex;
       flex-direction: column;
-      flex-grow: 1;
       gap: 15px;
+      flex: 1;
     }
-    .account-balance {
-      text-align: center;
-      flex: 2; /* Makes this section take more vertical space */
-    }
-    .account-balance .charts {
+    /* My Accounts Container */
+    .my-accounts {
+      min-height: 200px;
+      max-height: 300px;
+      overflow-y: auto;
       display: flex;
-      justify-content: space-around;
-      margin-top: 15px;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
     }
+    .account-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .account-item h4 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .account-balance-num {
+      font-size: 16px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    /* Scrollbar Styles (Black, Rounded) */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #000;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #333;
+    }
+
+    /* Additional Info Section */
     .text-section {
       text-align: center;
       flex: 1;
+      min-height: 120px;
+      overflow-y: auto;
     }
-    /* Middle Section */
+
+    /* ----- Middle Section (Transactions & Bills) ----- */
     .middle-section {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      gap: 20px;
     }
     .recent-transactions {
-      /* Natural height based on content */
+      min-height: 200px;
+      max-height: 350px;
+      overflow-y: auto;
     }
+    .transaction-card {
+      display: flex;
+      align-items: center;
+      background: #f9f9f9;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .transaction-icon {
+      width: 40px;
+      height: 40px;
+      background: #eee;
+      border-radius: 50%;
+      margin-right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+    }
+    .transaction-details {
+      display: flex;
+      flex-direction: column;
+    }
+    .transaction-amount {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .transaction-info {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+    }
+
+    /* Bills Container */
     .bottom-row {
       display: flex;
       gap: 30px;
-      flex-grow: 0.5; /* Fills the remaining vertical space */
-      margin-top: 15px;
+      align-items: flex-start;
     }
-    .bottom-row .box {
-      flex: 1;
+    .bills,
+    .goals {
+      min-height: 150px;
     }
-    /* Right Section */
+    #bills-info {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .bill-card {
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+    .bill-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bill-amount {
+      font-weight: bold;
+      color: #333;
+    }
+    .bill-meta {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* ----- Right Section (Job Listings) ----- */
     .job-listings {
-      height: 90%;
+      min-height: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
     .job-listings ul {
       list-style: none;
       padding-left: 0;
+      margin: 0;
     }
     .job-listings li {
-      margin-bottom: 5px;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo img {
-      max-height: 100px;
-      margin-right: 10px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -181,7 +315,7 @@
     <!-- Header -->
     <div class="header">
       <div class="logo">
-        <img src="images/logo.png" alt="My Logo" style="height: 100px;" />
+        <img src="images/logo.png" alt="My Logo" />
       </div>
       <div class="nav">
         <a href="#">Home</a>
@@ -190,33 +324,24 @@
         <a href="#">Job Listings</a>
       </div>
     </div>
-
     <!-- Dashboard Layout -->
     <div class="dashboard">
       <!-- Left Section -->
       <div class="left-section">
-        <h3>Welcome Back, &lt;Name&gt;</h3>
+        <h3 id="welcome-name">Welcome Back, User</h3>
         <div class="left-content">
-          <div class="account-balance">
-            <h2>Account Balance</h2>
-            <div class="charts">
-              <div>
-                <p>Income: <span id="income-data">&lt;Income&gt;</span></p>
-                <img src="https://via.placeholder.com/80" alt="Pie Chart" />
-              </div>
-              <div>
-                <p>Expenses: <span id="expenses-data">&lt;Expenses&gt;</span></p>
-                <img src="https://via.placeholder.com/80" alt="Bar Chart" />
-              </div>
-            </div>
+          <!-- My Accounts Section -->
+          <div class="box my-accounts" id="accounts-list">
+            <h2 style="margin: 0 0 10px 0;">My Accounts</h2>
+            <!-- Individual accounts appended here -->
           </div>
+          <!-- Additional Info Section -->
           <div class="text-section">
             <h2>Additional Info</h2>
             <p id="additional-info">Some additional text goes here...</p>
           </div>
         </div>
       </div>
-      
       <!-- Middle Section -->
       <div class="middle-section">
         <div class="recent-transactions">
@@ -229,16 +354,15 @@
           <div class="box bills">
             <h3>Bills</h3>
             <div id="bills-info">
-              <p>&lt;Bill&gt; | Date | $</p>
+              <p>Loading bills...</p>
             </div>
-          </div>          
+          </div>
           <div class="box goals">
             <h3>Goals</h3>
             <p id="goals-info">&lt;Goal&gt; | Progress</p>
           </div>
         </div>
       </div>
-
       <!-- Right Section -->
       <div class="job-listings">
         <h3>Job Listings</h3>
@@ -252,106 +376,148 @@
       </div>
     </div>
   </div>
-  
   <script>
-    // Function to fetch account data (existing)
+    let accountsMap = {};
+
+    // Generate random additional info message
+    function generateAdditionalInfo() {
+      const messages = [
+        "You've saved over 20% this month!",
+        "You're spending $300 on dining out.",
+        "Your overall spending decreased by 10% since last month.",
+        "Great job! Your savings are on track.",
+        "Consider budgeting for entertainment this month."
+      ];
+      return messages[Math.floor(Math.random() * messages.length)];
+    }
+
+    // Fetch and display accounts in a nice list
     async function fetchAccountData() {
       try {
         const response = await fetch('/api/accounts');
         const data = await response.json();
         console.log('Accounts data:', data);
+
+        const accountsList = document.getElementById('accounts-list');
         if (data && data.accounts) {
-          let totalIncome = 0;
+          accountsMap = {};
+          accountsList.innerHTML = '<h2 style="margin: 0 0 10px 0;">My Accounts</h2>';
           data.accounts.forEach(account => {
-            if (account.balances && account.balances.current) {
-              totalIncome += account.balances.current;
-            }
+            accountsMap[account.account_id] = account;
+            const accNameRaw = account.official_name || account.name || 'Account';
+            const accBalance = account.balances?.current?.toFixed(2) || '0.00';
+            const accountDiv = document.createElement('div');
+            accountDiv.className = 'account-item';
+            accountDiv.innerHTML = `
+              <h4>${accNameRaw}</h4>
+              <p class="account-balance-num">$${accBalance}</p>
+            `;
+            accountsList.appendChild(accountDiv);
           });
-          document.getElementById('income-data').innerText = '$' + totalIncome.toFixed(2);
-          document.getElementById('expenses-data').innerText = '$0.00';
-          document.getElementById('additional-info').innerText = 'Account data updated successfully!';
+          // If there's at least one account, set a welcome message
+          if (data.accounts.length > 0) {
+            let firstAccountName = data.accounts[0].official_name || data.accounts[0].name || 'User';
+            if (firstAccountName.toLowerCase().includes('plaid gold standard') 
+                || firstAccountName.toLowerCase().trim() === 'issues') {
+              firstAccountName = 'User';
+            }
+            document.getElementById('welcome-name').innerText = 'Welcome Back, ' + firstAccountName;
+          }
+          // Set a random additional info message
+          document.getElementById('additional-info').innerText = generateAdditionalInfo();
         }
       } catch (error) {
         console.error('Error fetching account data:', error);
         document.getElementById('additional-info').innerText = 'Failed to update account data.';
       }
     }
-  
-    // Function to fetch transaction data (existing)
+
+    // Filter transactions for bills using keywords from the transaction name
+    function filterBills(transactions) {
+      return transactions.filter(txn => {
+        const lowerName = txn.name.toLowerCase();
+        return (
+          lowerName.includes('payment') ||
+          lowerName.includes('pymnt') ||
+          lowerName.includes('insurance') ||
+          lowerName.includes('subscription')
+        );
+      });
+    }
+
+    // Fetch transaction data, merge with account info, and display as cards
     async function fetchTransactionData() {
       try {
         const response = await fetch('/api/transactions');
         const data = await response.json();
         console.log('Transaction data:', data);
+
         const container = document.getElementById('transactions-container');
         if (data && data.transactions && Array.isArray(data.transactions)) {
-          container.innerHTML = data.transactions.map(txn => `
-            <div class="transaction">
-              <p><strong>${txn.name}</strong> | ${txn.date} | $${txn.amount}</p>
-            </div>
-          `).join('');
+          container.innerHTML = ''; // Clear placeholder
+          data.transactions.forEach(txn => {
+            const account = accountsMap[txn.account_id];
+            const accountName = account ? (account.official_name || account.name || 'Account') : 'Unknown Account';
+            const mask = account && account.mask ? `•••• ${account.mask}` : '';
+            const txnDiv = document.createElement('div');
+            txnDiv.className = 'transaction-card';
+
+            let iconText = '💳';
+            if (accountName.toLowerCase().includes('visa')) iconText = 'V';
+            else if (accountName.toLowerCase().includes('master')) iconText = 'M';
+
+            txnDiv.innerHTML = `
+              <div class="transaction-icon">${iconText}</div>
+              <div class="transaction-details">
+                <p class="transaction-amount">$${txn.amount.toFixed(2)}</p>
+                <p class="transaction-info">${txn.name} | ${txn.date}</p>
+                <p class="transaction-info">${accountName} ${mask}</p>
+              </div>
+            `;
+            container.appendChild(txnDiv);
+          });
+
+          // Update Bills section using filtered transactions
+          const bills = filterBills(data.transactions);
+          const billsContainer = document.getElementById('bills-info');
+          if (bills.length > 0) {
+            billsContainer.innerHTML = '';
+            bills.forEach(bill => {
+              const billDiv = document.createElement('div');
+              billDiv.className = 'bill-card';
+              const account = accountsMap[bill.account_id];
+              const accountName = account ? (account.official_name || account.name || 'Account') : 'Unknown Account';
+              const mask = account && account.mask ? `•••• ${account.mask}` : '';
+              billDiv.innerHTML = `
+                <div class="bill-info">
+                  <strong>${bill.name}</strong>
+                  <span class="bill-amount">$${bill.amount.toFixed(2)}</span>
+                </div>
+                <div class="bill-meta">
+                  <small>${bill.date} &middot; ${mask}</small>
+                </div>
+              `;
+              billsContainer.appendChild(billDiv);
+            });
+          } else {
+            billsContainer.innerHTML = '<p>No bills available.</p>';
+          }
         } else {
           container.innerHTML = '<p>No transactions available.</p>';
+          document.getElementById('bills-info').innerHTML = '<p>No bills available.</p>';
         }
       } catch (error) {
         console.error('Error fetching transaction data:', error);
         document.getElementById('transactions-container').innerHTML = '<p>Error loading transactions.</p>';
       }
     }
-  
-    // Function to fetch bills data
-    async function fetchBillsData() {
-      try {
-        const response = await fetch('/api/bills');
-        const data = await response.json();
-        console.log('Bills data:', data);
-        const container = document.getElementById('bills-info');
-        if (data && data.bills && Array.isArray(data.bills)) {
-          container.innerHTML = data.bills.map(bill => `
-            <div class="bill">
-              <p><strong>${bill.name}</strong> | ${bill.date} | $${bill.amount.toFixed(2)}</p>
-            </div>
-          `).join('');
-        } else {
-          container.innerHTML = '<p>No bills available.</p>';
-        }
-      } catch (error) {
-        console.error('Error fetching bills data:', error);
-        document.getElementById('bills-info').innerHTML = '<p>Error loading bills.</p>';
-      }
-    }
-  
-    // Function to fetch expenses data (if you have a separate endpoint)
-    async function fetchExpensesData() {
-      try {
-        const response = await fetch('/api/expenses');
-        const data = await response.json();
-        console.log('Expenses data:', data);
-        // Assuming you have an element with id "expenses-info"
-        const container = document.getElementById('expenses-info');
-        if (data && data.expenses && Array.isArray(data.expenses)) {
-          container.innerHTML = data.expenses.map(expense => `
-            <div class="expense">
-              <p><strong>${expense.category}</strong> | $${expense.amount.toFixed(2)}</p>
-            </div>
-          `).join('');
-        } else {
-          container.innerHTML = '<p>No expenses available.</p>';
-        }
-      } catch (error) {
-        console.error('Error fetching expenses data:', error);
-        // Update accordingly if you have an expenses container
-      }
-    }
-  
-    // Call all fetch functions when the dashboard page loads
+
+    // On page load, fetch accounts first, then transactions
     window.addEventListener('load', () => {
-      fetchAccountData();
-      fetchTransactionData();
-      fetchBillsData();
-      // Uncomment if you have an expenses endpoint and container:
-      // fetchExpensesData();
+      fetchAccountData().then(() => {
+        fetchTransactionData();
+      });
     });
-  </script>  
+  </script>
 </body>
 </html>

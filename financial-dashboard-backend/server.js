@@ -84,43 +84,26 @@ app.get('/api/accounts', async (req, res) => {
   }
 });
 
-/*
-// Get Transactions (update date range)
 app.get('/api/transactions', async (req, res) => {
   try {
     if (!ACCESS_TOKEN) throw new Error('No access token');
-    const startDate = '2023-01-01';  // Updated date range
-    const endDate = '2023-12-31';
+    const startDate = '2000-01-01';
+    const endDate = '2025-02-10';
     const response = await client.transactionsGet({
       access_token: ACCESS_TOKEN,
       start_date: startDate,
       end_date: endDate,
     });
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error getting transactions:', error.response?.data || error);
-    res.status(500).json(error.response?.data || { error: error.message });
-  }
-});
-*/
-
-app.get('/api/transactions', async (req, res) => {
-  try {
-    if (!ACCESS_TOKEN) {
-      // Return sample data for testing if no access token is set
+    // If no transactions are returned, send sample data for testing:
+    if (!response.data.transactions || response.data.transactions.length === 0) {
+      console.log('No transactions found; returning sample transactions for testing.');
       return res.json({
         transactions: [
-          { name: 'Test Transaction', date: '2023-01-01', amount: 50.00 },
-          { name: 'Another Transaction', date: '2023-01-02', amount: 75.00 }
+          { name: 'Test Transaction 1', date: '2023-01-15', amount: 50.00, category: ["Restaurants", "Food"] },
+          { name: 'Test Transaction 2', date: '2023-02-20', amount: 75.00, category: ["Utilities"] }
         ]
       });
     }
-    // Otherwise, call the Plaid API
-    const response = await client.transactionsGet({
-      access_token: ACCESS_TOKEN,
-      start_date: '2023-01-01',
-      end_date: '2023-12-31',
-    });
     res.json(response.data);
   } catch (error) {
     console.error('Error getting transactions:', error.response?.data || error);
