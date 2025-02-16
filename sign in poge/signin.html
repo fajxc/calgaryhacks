@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextChapter</title>
+
+    <!-- Google Sign-In Script -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,12 +28,17 @@
             flex-wrap: wrap;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 20px;
+            position: relative;
         }
         .left-section {
             flex: 1;
             padding: 20px;
             min-width: 55%;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
         }
         .chart-image {
             width: 60%;
@@ -45,58 +53,115 @@
             text-align: center;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+            padding-top: 10px; /* Moves everything up */
         }
-        h1 {
+        .logo-image {
+            width: 250px;
+            margin-bottom: 0px;
+            position: relative;
+            top: -10px; /* Move higher */
+        }
+        h2 {
+            margin-bottom: 8px; /* Reduce space under "Welcome back!" */
+        }
+        .auth-section {
+            width: 100%;
+            max-width: 300px;
             text-align: center;
+            margin-top: -25px; /* Move login section even higher */
         }
         .input-box {
-            width: 80%;
+            width: 85%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 6px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
             text-align: center;
         }
-        .bold-text {
+        .google-signin-container {
+            margin-top: 5px; /* Bring Google sign-in closer */
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: none;
+            background: blue;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkblue;
+        }
+        .create-account {
+            margin-top: 3px;
+            font-size: 14px;
+        }
+        .create-account a {
+            color: blue;
+            text-decoration: none;
             font-weight: bold;
         }
-        .google-signin-container {
-            margin-top: 20px;
+        .create-account a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="left-section">
-            <h1>NextChapter</h1>
-            <p><strong>See how much money you're wasting—then learn how to fix it.</strong></p>
-            <p>Get started in seconds and prepare for your next chapter.</p>
-            <img src="Screenshot 2025-02-15 135657.png" alt="Financial Chart" class="chart-image">
+            <div>
+                <h1>NextChapter</h1>
+                <p><strong>See how much money you're wasting—then learn how to fix it.</strong></p>
+                <p>Get started in seconds and prepare for your next chapter.</p>
+                <img src="Screenshot 2025-02-15 135657.png" alt="Financial Chart" class="chart-image">
+
+                <!-- Investment Text under Graph -->
+                <p class="info-text">If you invest just $10 a day, you could have over $70,000 in 10 years!</p>
+                <p class="info-text"><strong>The best time to start? Right now.</strong></p>
+            </div>
         </div>
+
         <div class="right-section">
+            <!-- Centered NextChapter Logo Above "Welcome back!" -->
+            <img src="nextchapter-logo.png" alt="NextChapter Logo" class="logo-image">
+
             <h2>Welcome back!</h2>
-            <p>If you invest just $10 a day, you could have over $70,000 in 10 years!</p>
-            <p class="bold-text">The best time to start? Right now.</p>
-            <input type="email" class="input-box" placeholder="your@email.com">
-            <input type="password" class="input-box" placeholder="your password">
-            <div class="google-signin-container">
-                <div id="g_id_onload"
-                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                     data-login_uri="YOUR_LOGIN_URI"
-                     data-auto_prompt="false">
+
+            <!-- Login Section (Moved Up) -->
+            <div class="auth-section">
+                <h2>Login</h2>
+                <input type="email" id="login-email" class="input-box" placeholder="Enter your email">
+                <input type="password" id="login-password" class="input-box" placeholder="Enter your password">
+                <button onclick="loginUser()">Login</button>
+
+                <!-- Google Sign-In Button (Closer to Login) -->
+                <div class="google-signin-container">
+                    <div id="g_id_onload"
+                         data-client_id="125347354573-plr0kbuc167q8si5fedftgo4jlfr5f5i.apps.googleusercontent.com"
+                         data-login_uri="http://localhost:5000/google-login"
+                         data-auto_prompt="false">
+                    </div>
+
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-size="large"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-shape="rectangular"
+                         data-logo_alignment="left">
+                    </div>
                 </div>
-                <div class="g_id_signin"
-                     data-type="standard"
-                     data-size="large"
-                     data-theme="outline"
-                     data-text="sign_in_with"
-                     data-shape="rectangular"
-                     data-logo_alignment="left">
-                </div>
+
+                <!-- Create New Account Link -->
+                <p class="create-account">or <a href="register.html">Create New Account</a></p>
             </div>
         </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
