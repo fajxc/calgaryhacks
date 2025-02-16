@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to top, #FE8DC6, #FED1C7);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 1700px;
+      height: 90vh;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .header {     display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ddd;
+    }
+    .header h1 {
+      font-size: 24px;
+    }
+    .nav {
+        display: flex;
+        gap: 25px;
+        justify-content: flex-end;
+        margin-bottom: 30px;
+    }
+    .nav a {
+        text-decoration: none;
+        color: #000;
+        font-weight: bold;
+        position: relative;
+    }
+    .nav a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        background: #ff6384;
+        left: 0;
+        bottom: -5px;
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    .nav a:hover::after {
+        transform: scaleX(1);
+    }
+    /* Dashboard Grid */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.5fr 2fr 2fr; /* Left column is thinner now */
+      gap: 20px;
+      margin-top: 20px;
+      height: 100%;
+    }
+    /* Box Base Styling */
+    .box,
+    .account-balance,
+    .text-section,
+    .recent-transactions,
+    .job-listings {
+      background: #ffffff;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    /* Hover Effect for Boxes */
+    .box:hover,
+    .account-balance:hover,
+    .text-section:hover,
+    .recent-transactions:hover,
+    .job-listings:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    /* Smooth Text Hover */
+    .box p,
+    .account-balance p,
+    .text-section p,
+    .recent-transactions p,
+    .job-listings p,
+    .header h1,
+    .nav a,
+    .left-section h3,
+    .middle-section h3 {
+      transition: color 0.3s ease;
+    }
+    .box p:hover,
+    .account-balance p:hover,
+    .text-section p:hover,
+    .recent-transactions p:hover,
+    .job-listings p:hover {
+      color: #555;
+    }
+    /* Left Section */
+    .left-section {
+      display: flex;
+      flex-direction: column;
+    }
+    .left-section h3 {
+      margin-bottom: 10px;
+    }
+    .left-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 15px;
+    }
+    .account-balance {
+      text-align: center;
+      flex: 2; /* Makes this section take more vertical space */
+    }
+    .account-balance .charts {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
+    .text-section {
+      text-align: center;
+      flex: 1;
+    }
+    /* Middle Section */
+    .middle-section {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .recent-transactions {
+      /* Natural height based on content */
+    }
+    .bottom-row {
+      display: flex;
+      gap: 30px;
+      flex-grow: 0.5; /* Fills the remaining vertical space */
+      margin-top: 15px;
+    }
+    .bottom-row .box {
+      flex: 1;
+    }
+    /* Right Section */
+    .job-listings {
+      height: 90%;
+    }
+    .job-listings ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .job-listings li {
+      margin-bottom: 5px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      max-height: 100px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <img src="images/logo.png" alt="My Logo" style="height: 100px;" />
+      </div>
+      <div class="nav">
+        <a href="#">Home</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Financial Tracker</a>
+        <a href="#">Job Listings</a>
+      </div>
+    </div>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard">
+      <!-- Left Section -->
+      <div class="left-section">
+        <h3>Welcome Back, &lt;Name&gt;</h3>
+        <div class="left-content">
+          <div class="account-balance">
+            <h2>Account Balance</h2>
+            <div class="charts">
+              <div>
+                <p>Income: <span id="income-data">&lt;Income&gt;</span></p>
+                <img src="https://via.placeholder.com/80" alt="Pie Chart" />
+              </div>
+              <div>
+                <p>Expenses: <span id="expenses-data">&lt;Expenses&gt;</span></p>
+                <img src="https://via.placeholder.com/80" alt="Bar Chart" />
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <h2>Additional Info</h2>
+            <p id="additional-info">Some additional text goes here...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Middle Section -->
+      <div class="middle-section">
+        <div class="recent-transactions">
+          <h3>Recent Transactions</h3>
+          <div id="transactions-container">
+            <p>Loading transactions...</p>
+          </div>
+        </div>
+        <div class="bottom-row">
+          <div class="box bills">
+            <h3>Bills</h3>
+            <div id="bills-info">
+              <p>&lt;Bill&gt; | Date | $</p>
+            </div>
+          </div>          
+          <div class="box goals">
+            <h3>Goals</h3>
+            <p id="goals-info">&lt;Goal&gt; | Progress</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section -->
+      <div class="job-listings">
+        <h3>Job Listings</h3>
+        <ul id="job-listings">
+          <li>Listing</li>
+          <li>Listing</li>
+          <li>Listing</li>
+          <li>Listing</li>
+          <li>Listing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Function to fetch account data (existing)
+    async function fetchAccountData() {
+      try {
+        const response = await fetch('/api/accounts');
+        const data = await response.json();
+        console.log('Accounts data:', data);
+        if (data && data.accounts) {
+          let totalIncome = 0;
+          data.accounts.forEach(account => {
+            if (account.balances && account.balances.current) {
+              totalIncome += account.balances.current;
+            }
+          });
+          document.getElementById('income-data').innerText = '$' + totalIncome.toFixed(2);
+          document.getElementById('expenses-data').innerText = '$0.00';
+          document.getElementById('additional-info').innerText = 'Account data updated successfully!';
+        }
+      } catch (error) {
+        console.error('Error fetching account data:', error);
+        document.getElementById('additional-info').innerText = 'Failed to update account data.';
+      }
+    }
+  
+    // Function to fetch transaction data (existing)
+    async function fetchTransactionData() {
+      try {
+        const response = await fetch('/api/transactions');
+        const data = await response.json();
+        console.log('Transaction data:', data);
+        const container = document.getElementById('transactions-container');
+        if (data && data.transactions && Array.isArray(data.transactions)) {
+          container.innerHTML = data.transactions.map(txn => `
+            <div class="transaction">
+              <p><strong>${txn.name}</strong> | ${txn.date} | $${txn.amount}</p>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = '<p>No transactions available.</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching transaction data:', error);
+        document.getElementById('transactions-container').innerHTML = '<p>Error loading transactions.</p>';
+      }
+    }
+  
+    // Function to fetch bills data
+    async function fetchBillsData() {
+      try {
+        const response = await fetch('/api/bills');
+        const data = await response.json();
+        console.log('Bills data:', data);
+        const container = document.getElementById('bills-info');
+        if (data && data.bills && Array.isArray(data.bills)) {
+          container.innerHTML = data.bills.map(bill => `
+            <div class="bill">
+              <p><strong>${bill.name}</strong> | ${bill.date} | $${bill.amount.toFixed(2)}</p>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = '<p>No bills available.</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching bills data:', error);
+        document.getElementById('bills-info').innerHTML = '<p>Error loading bills.</p>';
+      }
+    }
+  
+    // Function to fetch expenses data (if you have a separate endpoint)
+    async function fetchExpensesData() {
+      try {
+        const response = await fetch('/api/expenses');
+        const data = await response.json();
+        console.log('Expenses data:', data);
+        // Assuming you have an element with id "expenses-info"
+        const container = document.getElementById('expenses-info');
+        if (data && data.expenses && Array.isArray(data.expenses)) {
+          container.innerHTML = data.expenses.map(expense => `
+            <div class="expense">
+              <p><strong>${expense.category}</strong> | $${expense.amount.toFixed(2)}</p>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = '<p>No expenses available.</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching expenses data:', error);
+        // Update accordingly if you have an expenses container
+      }
+    }
+  
+    // Call all fetch functions when the dashboard page loads
+    window.addEventListener('load', () => {
+      fetchAccountData();
+      fetchTransactionData();
+      fetchBillsData();
+      // Uncomment if you have an expenses endpoint and container:
+      // fetchExpensesData();
+    });
+  </script>  
+</body>
+</html>
